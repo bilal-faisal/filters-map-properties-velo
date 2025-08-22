@@ -1,0 +1,922 @@
+const BUSINESS_TYPE_FILTER_CONFIG = {
+    "Holiday Home": {
+        sleeps: true,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: true,
+
+        hotTub: true,
+        enclosedGarden: true,
+        // sizeOfGarden: true,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: true,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: true,
+        fenceHeight: true,
+        // dogsAllowedOnFurniture: true,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: true,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: true,
+        evChargerOnSite: false, // not available
+        pricePerNight: true,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: true,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: true,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: true,
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: true,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: true,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: true,
+    },
+    "Holiday Park (cabins/static caravans)": {
+        sleeps: true,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: true,
+        hotTub: true,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: true,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: true,
+        fenceHeight: true,
+        // dogsAllowedOnFurniture: true,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: true,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: true,
+        evChargerOnSite: false, // not available
+        pricePerNight: true,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: true,
+        // muzzleFreeArea: false, //true(yellow)
+        muzzleFreeArea: false, // not available //true(yellow)
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: true,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: true,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: true,
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: true,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: true,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: true,
+    },
+    "Hotel/B&B": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: true,
+        hotTub: false, //true(yellow)
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: true,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: true,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: true,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: true,
+        evChargerOnSite: false, // not available
+        pricePerNight: true,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: true,
+        // muzzleFreeArea: false, //true(yellow)
+        muzzleFreeArea: false, // not available //true(yellow)
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: true,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: true,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: true,
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: true,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: true,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: true,
+    },
+    "Glamping": {
+        sleeps: true,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: true,
+        hotTub: true,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: true,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: true,
+        fenceHeight: true,
+        // dogsAllowedOnFurniture: true,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: true,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: true,
+        evChargerOnSite: false, // not available
+        pricePerNight: true,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: true,
+        // muzzleFreeArea: false, //true(yellow)
+        muzzleFreeArea: false, // not available //true(yellow)
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: true,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: true,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: true,
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: true,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: true,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: true,
+    },
+    "Camping/Motorhome Site": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: true,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: true,
+        evChargerOnSite: false, // not available
+        pricePerNight: true,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: true,
+        // muzzleFreeArea: false, //true(yellow)
+        muzzleFreeArea: false, // not available //true(yellow)
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: true,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: true,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: true,
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: true,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: true,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false, //true(yellow)
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: true,
+    },
+    "Kennel": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: true,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: true,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: true,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: true,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false,
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false,
+    },
+    "Private Enclosed Field/Play Area": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false, //true(yellow)
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: true,
+        fenceHeight: true,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: true,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: true,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false, //true(yellow)
+        otherPetsanimalsAllowed: false, // not available //true(yellow)
+        // dogsFromMixedHouseholdsAllowed: true,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Swimming Pool": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false, //true(yellow)
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false, //true(yellow)
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: true,
+        enclosedOutdoorAreaOrField: false, //true(yellow)
+        // muzzleFreeArea: false, //true(yellow)
+        muzzleFreeArea: false, // not available //true(yellow)
+        // indoorOrOutdoor: true,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false, //true(yellow)
+        otherPetsanimalsAllowed: false, // not available //true(yellow)
+        // dogsFromMixedHouseholdsAllowed: true,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Photographer": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false, //true(yellow)
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false, //true(yellow)
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: true,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false, //true(yellow)
+        muzzleFreeArea: false, // not available //true(yellow)
+        // indoorOrOutdoor: true,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false, //true(yellow)
+        otherPetsanimalsAllowed: false, // not available //true(yellow)
+        // dogsFromMixedHouseholdsAllowed: false, //true(yellow)
+        dogsFromMixedHouseholdsAllowed: false, // not available //true(yellow)
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Trainer": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: true,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: true,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: true,
+        enclosedOutdoorAreaOrField: false, //true(yellow)
+        // muzzleFreeArea: false, //true(yellow)
+        muzzleFreeArea: false, // not available //true(yellow)
+        // indoorOrOutdoor: true,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: true,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false, //true(yellow)
+        dogsFromMixedHouseholdsAllowed: false, // not available //true(yellow)
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Dog Walker": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false, //true(yellow)
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: true,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false, //true(yellow)
+        dogsFromMixedHouseholdsAllowed: false, // not available //true(yellow)
+        // wheelchairAccessible: false,
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false,
+    },
+    "Boarder": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false, //true(yellow)
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: true,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false, //true(yellow)
+        otherPetsanimalsAllowed: false, // not available //true(yellow)
+        // dogsFromMixedHouseholdsAllowed: false, //true(yellow)
+        dogsFromMixedHouseholdsAllowed: false, // not available //true(yellow)
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false,
+    },
+    "Groomer": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false, //true(yellow)
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false, //true(yellow)
+        otherPetsanimalsAllowed: false, // not available //true(yellow)
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Pubs": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Other": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Vets": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: false,
+        suitableForReactivePups: false, //true(yellow)
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Local boutique dog shops": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false, //true(yellow)
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Cafes": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+    "Restaurants": {
+        sleeps: false,
+        country: true,
+        // locationArea: true,
+        locationArea: false, // not available
+        propertyType: false,
+        hotTub: false,
+        enclosedGarden: false,
+        // sizeOfGarden: false,
+        sizeOfGarden: false, // not available
+        numberOfDogsAllowed: false,
+        // numberOfDogsAllowedPerRoom: false,
+        numberOfDogsAllowedPerRoom: false, // not available
+        allBreedFriendly: true,
+        suitableForReactivePups: false,
+        fenceHeight: false,
+        // dogsAllowedOnFurniture: false,
+        dogsAllowedOnFurniture: false, // not available
+        // dogsAllowedToBeLeftAlone: false,
+        dogsAllowedToBeLeftAlone: false, // not available
+        // evChargerOnSite: false,
+        evChargerOnSite: false, // not available
+        pricePerNight: false,
+        pricePerSession: false,
+        enclosedOutdoorAreaOrField: false,
+        // muzzleFreeArea: false,
+        muzzleFreeArea: false, // not available
+        // indoorOrOutdoor: false,
+        indoorOrOutdoor: false, // not available
+        // sizeOfOutdoorArea: false,
+        sizeOfOutdoorArea: false, // not available
+        // fishingAvailable: false,
+        fishingAvailable: false, // not available
+        // otherPetsanimalsAllowed: false,
+        otherPetsanimalsAllowed: false, // not available
+        // dogsFromMixedHouseholdsAllowed: false,
+        dogsFromMixedHouseholdsAllowed: false, // not available
+        // wheelchairAccessible: false, //true(yellow)
+        wheelchairAccessible: false, // not available
+        // childrenWelcomed: false,
+        childrenWelcomed: false, // not available
+        // wiFiAvailable: false,
+        wiFiAvailable: false, // not available
+        // sharedFacilitiesOnSite: false,
+        sharedFacilitiesOnSite: false, // not available
+        freeParkingOnSite: false, //true(yellow)
+    },
+};
+
+export function getFiltersConditioningData() {
+    return BUSINESS_TYPE_FILTER_CONFIG;
+}
+
+// [
+//   "Holiday Home",
+//   "Holiday Park",
+//   "Hotel/B&B",
+//   "Glamping",
+//   "Camping/Motorhome Site",
+//   "Kennel",
+//   "Private Field",
+//   "Swimming Pool",
+//   "Photographer",
+//   "Trainer",
+//   "Dog Walker",
+//   "Boarder",
+//   "Groomer",
+//   "Pub",
+//   "Other",
+//   "Vets",
+//   "Boutique Dog Shop",
+//   "Cafe",
+//   "Restaurants",
+// ]
