@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dog-Friendly Property Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Always set the map height explicitly to define the size of the div element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        #map {
+            font-family: 'Wix Madefor Display', Arial, sans-serif;
+            border-radius: 10px;
+        }
+
+        /* Also target the legend and any other elements */
+        .color-legend,
+        .color-legend * {
+            font-family: 'Wix Madefor Display', Arial, sans-serif;
+        }
+
+        /* For InfoWindow content */
+        .info-window-content,
+        .info-window-content * {
+            font-family: 'Wix Madefor Display', Arial, sans-serif !important;
+        }
+
+        /* Color Legend Styles */
+        .color-legend {
+            position: absolute;
+            bottom: 30px;
+            /* top: 10px; */
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            font-size: 13px;
+            min-width: 140px;
+        }
+
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-paw {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            color: #555;
+            font-size: 12px;
+        }
+
+        .info-window-content {
+            padding: 5px;
+            max-width: 280px;
+        }
+
+        .info-window-content h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .info-window-content p {
+            margin-bottom: 5px;
+        }
+
+        .info-window-content a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .info-window-content a:hover {
+            text-decoration: underline;
+        }
+
+        .key-features {
+            background-color: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 8px 0;
+            font-size: 13px;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .key-features strong {
+            color: #2d5016;
+        }
+
+        .blurred-content {
+            filter: blur(4px);
+            -webkit-filter: blur(4px);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .info-window-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .info-window-buttons button {
+            background-color: #177d6c;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-window-buttons button:hover {
+            background-color: #157565;
+        }
+
+        .info-window-buttons .book-now-btn {
+            background-color: #177d6c;
+        }
+
+        .info-window-buttons .book-now-btn:hover {
+            background-color: #157565;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <!-- Color Legend -->
+    <div class="color-legend">
+        <div class="legend-title">Property Types</div>
+        <div class="legend-item">
+            <div class="legend-paw" id="legend-book-direct"></div>
+            <span class="legend-text">Book Direct</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-paw" id="legend-trusted-partner"></div>
+            <span class="legend-text">Trusted Partner</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-paw" id="legend-kennel"></div>
+            <span class="legend-text">Kennel</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-paw" id="legend-field"></div>
+            <span class="legend-text">Field</span>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let markers = [];
+        let infoWindow;
+        let pendingPropertiesData = null; // To store data if map isn't ready yet
+
+        // Function to create legend paw icons
+        function createLegendPaws() {
+            const legendItems = [
+                { id: 'legend-book-direct', color: '#177d6c' },
+                { id: 'legend-trusted-partner', color: '#4a6fa5' },
+                { id: 'legend-kennel', color: '#8b7355' },
+                { id: 'legend-field', color: '#b8860b' }
+            ];
+
+            legendItems.forEach(item => {
+                const element = document.getElementById(item.id);
+                if (element) {
+                    element.innerHTML = createPawPrintSVG(item.color, 20);
+                }
+            });
+        }
+
+        // Make initMap a global function, as required by Google Maps API callback
+        window.initMap = function () {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 54.00, lng: -2.00 }, // Centered roughly on the UK
+                zoom: 6,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false
+            });
+            infoWindow = new google.maps.InfoWindow();
+            console.log("Google Map initialized.");
+
+            // Create legend paw icons after map is initialized
+            createLegendPaws();
+
+            // If there's pending data from Wix, process it now
+            if (pendingPropertiesData) {
+                updateMarkers(pendingPropertiesData);
+                pendingPropertiesData = null; // Clear it
+            }
+        };
+
+        // Function to load Google Maps API script dynamically
+        function loadGoogleMapsScript() {
+            // Check if Google Maps API is already loaded
+            if (typeof google === 'object' && typeof google.maps === 'object') {
+                console.log("Google Maps API already loaded.");
+                // If map is already initialized, call initMap to ensure pending data is processed
+                if (map) {
+                    window.initMap();
+                }
+                return;
+            }
+
+            const apiKey = 'AIzaSyARn5YR6x14sOALjcLD3Z8KhKFmQfo_JFo'; // Your API Key
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
+        // Function to create SVG paw print icon with custom color
+        function createPawPrintSVG(color, size = 32) {
+            const svg = `
+                <svg width="${size}" height="${size}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Paw pad (main) -->
+                    <ellipse cx="16" cy="20" rx="6" ry="8" fill="${color}" stroke="white" stroke-width="1.5"/>
+                    
+                    <!-- Top left toe -->
+                    <ellipse cx="9" cy="10" rx="3" ry="4" fill="${color}" stroke="white" stroke-width="1"/>
+                    
+                    <!-- Top center-left toe -->
+                    <ellipse cx="13" cy="7" rx="3" ry="4" fill="${color}" stroke="white" stroke-width="1"/>
+                    
+                    <!-- Top center-right toe -->
+                    <ellipse cx="19" cy="7" rx="3" ry="4" fill="${color}" stroke="white" stroke-width="1"/>
+                    
+                    <!-- Top right toe -->
+                    <ellipse cx="23" cy="10" rx="3" ry="4" fill="${color}" stroke="white" stroke-width="1"/>
+                </svg>
+            `;
+
+            return svg;
+        }
+
+        // Function to get custom paw print marker icon based on property type
+        function getMarkerIcon(bookingType) {
+            let color = '#177d6c'; // Default red
+
+            switch (bookingType) {
+                case 'Book Direct':
+                    color = '#177d6c'; // Red
+                    break;
+                case 'Trusted Partner':
+                    color = '#4a6fa5'; // Teal
+                    break;
+                case 'Kennel':
+                    color = '#8b7355'; // Gold/Yellow
+                    break;
+                case 'Field':
+                    color = '#b8860b'; // Lime Green
+                    break;
+                default:
+                    color = '#808080'; // Grey for unknown types
+                    break;
+            }
+
+            return {
+                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(createPawPrintSVG(color)),
+                scaledSize: new google.maps.Size(40, 40),
+                anchor: new google.maps.Point(20, 20), // Center the icon
+                origin: new google.maps.Point(0, 0),
+                optimized: false // Important for SVG icons
+            };
+        }
+
+        // Alternative function for more detailed paw print (optional)
+        function createDetailedPawPrintSVG(color) {
+            const svg = `
+                <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Drop shadow effect -->
+                    <defs>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="1" dy="1" stdDeviation="1" flood-color="rgba(0,0,0,0.3)"/>
+                        </filter>
+                    </defs>
+                    
+                    <!-- Main paw pad -->
+                    <path d="M16 12 Q22 12 22 20 Q22 26 16 26 Q10 26 10 20 Q10 12 16 12 Z" 
+                          fill="${color}" stroke="white" stroke-width="1.5" filter="url(#shadow)"/>
+                    
+                    <!-- Top left toe -->
+                    <ellipse cx="8" cy="8" rx="2.5" ry="3.5" 
+                             fill="${color}" stroke="white" stroke-width="1" filter="url(#shadow)"/>
+                    
+                    <!-- Top center-left toe -->
+                    <ellipse cx="13" cy="5" rx="2.5" ry="3.5" 
+                             fill="${color}" stroke="white" stroke-width="1" filter="url(#shadow)"/>
+                    
+                    <!-- Top center-right toe -->
+                    <ellipse cx="19" cy="5" rx="2.5" ry="3.5" 
+                             fill="${color}" stroke="white" stroke-width="1" filter="url(#shadow)"/>
+                    
+                    <!-- Top right toe -->
+                    <ellipse cx="24" cy="8" rx="2.5" ry="3.5" 
+                             fill="${color}" stroke="white" stroke-width="1" filter="url(#shadow)"/>
+                </svg>
+            `;
+
+            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+        }
+
+        // Function to create or update markers on the map
+        function updateMarkers(properties) {
+            // If map is not initialized or Google Maps API is not ready, store data and exit
+            if (!map || typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                console.warn("Map or Google Maps API not ready. Storing data for later.");
+                pendingPropertiesData = properties; // Store data to process once map is ready
+                return;
+            }
+
+            // Clear existing markers
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+
+            console.log(`Adding ${properties.length} paw print markers to the map.`);
+
+            let bounds = new google.maps.LatLngBounds();
+
+            properties.forEach(property => {
+                // Ensure latitude and longitude are valid numbers
+                const lat = parseFloat(property.latitude);
+                const lng = parseFloat(property.longitude);
+
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    const position = { lat: lat, lng: lng };
+                    const icon = getMarkerIcon(property.bookingType);
+
+                    const marker = new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        title: property.businessType || '',
+                        icon: icon
+                    });
+
+                    // Add hover effect for better UX
+                    marker.addListener('mouseover', () => {
+                        marker.setZIndex(1000); // Bring to front on hover
+                    });
+
+                    marker.addListener('mouseout', () => {
+                        marker.setZIndex(1); // Reset z-index
+                    });
+
+                    // Info window content - showing only business category for non-premium users
+                    const contentString = `
+                        <div class="info-window-content">
+                            <h3>${property.businessType}</h3>
+                            <p class="blurred-content"><strong>Location:</strong> ⚲ Beautiful Location, County</p>
+                            <p class="blurred-content"><strong>Type:</strong> Premium Property</p>
+                            <div class="key-features blurred-content"><strong>Key Features:</strong><br>X guests · X bedrooms · X bathrooms · X beds · X dogs allowed · Secure garden · All breeds welcomed</div>
+                            <p class="blurred-content">This stunning property offers everything you need for the perfect getaway with your furry friends. Located in a beautiful area with excellent amenities and facilities.</p>
+                            <div class="info-window-buttons">
+                                ${!property.isBookDirect ? `<button class="view-details-btn" data-link="https://www.xlescapes.com/pricing-plans/list">View Details</button>` : ''}
+                                ${property.isBookDirect ? `<button class="book-now-btn" data-link="https://www.xlescapes.com/pricing-plans/list">Book Now</button>` : ''}
+                                </div>
+                                </div>
+                                `;
+
+                    marker.addListener('click', () => {
+                        infoWindow.setContent(contentString);
+                        infoWindow.open(map, marker);
+
+                        // Attach event listeners to buttons inside info window
+                        google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+                            const viewDetailsButton = document.querySelector('.info-window-content .view-details-btn');
+                            if (viewDetailsButton) {
+                                viewDetailsButton.addEventListener('click', (e) => {
+                                    const link = e.target.dataset.link;
+                                    if (link) {
+                                        window.parent.postMessage({ type: 'navigate', url: link }, '*');
+                                    }
+                                });
+                            }
+                            const bookNowButton = document.querySelector('.info-window-content .book-now-btn');
+                            if (bookNowButton) {
+                                bookNowButton.addEventListener('click', (e) => {
+                                    const link = e.target.dataset.link;
+                                    if (link) {
+                                        window.parent.postMessage({ type: 'navigate', url: link }, '*');
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                    markers.push(marker);
+                    bounds.extend(position);
+                } else {
+                    console.warn(`Invalid latitude/longitude for property: ${property.listingName || 'Unknown Property'}. Lat: ${property.latitude}, Lng: ${property.longitude}`);
+                }
+            });
+
+            if (markers.length > 0) {
+                map.fitBounds(bounds); // Zoom to fit all markers
+                // Ensure we don't zoom in too much for single markers
+                google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
+                    if (map.getZoom() > 15) {
+                        map.setZoom(15);
+                    }
+                });
+            } else {
+                // If no properties, center back on UK
+                map.setCenter({ lat: 54.00, lng: -2.00 });
+                map.setZoom(6);
+            }
+        }
+
+        // Listen for messages from the Wix Velo code
+        window.onmessage = (event) => {
+            if (event.data.type === 'updateMarkers') {
+                updateMarkers(event.data.properties);
+            }
+        };
+
+        // Load the Google Maps script when the page loads
+        loadGoogleMapsScript();
+    </script>
+</body>
+
+</html>
