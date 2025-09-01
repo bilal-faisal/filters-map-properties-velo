@@ -192,22 +192,26 @@
 
     <!-- Color Legend -->
     <div class="color-legend">
-        <div class="legend-title">Property Types</div>
+        <div class="legend-title">Business Types</div>
         <div class="legend-item">
-            <div class="legend-paw" id="legend-book-direct"></div>
-            <span class="legend-text">Book Direct</span>
+            <div class="legend-paw" id="legend-holiday-home"></div>
+            <span class="legend-text">Holiday Home</span>
         </div>
         <div class="legend-item">
-            <div class="legend-paw" id="legend-trusted-partner"></div>
-            <span class="legend-text">Trusted Partner</span>
+            <div class="legend-paw" id="legend-private-field"></div>
+            <span class="legend-text">Private Field</span>
         </div>
         <div class="legend-item">
-            <div class="legend-paw" id="legend-kennel"></div>
-            <span class="legend-text">Kennel</span>
+            <div class="legend-paw" id="legend-swimming-pool"></div>
+            <span class="legend-text">Swimming Pool</span>
         </div>
         <div class="legend-item">
-            <div class="legend-paw" id="legend-field"></div>
-            <span class="legend-text">Field</span>
+            <div class="legend-paw" id="legend-glamping"></div>
+            <span class="legend-text">Glamping</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-paw" id="legend-others"></div>
+            <span class="legend-text">Others</span>
         </div>
     </div>
 
@@ -220,10 +224,11 @@
         // Function to create legend paw icons
         function createLegendPaws() {
             const legendItems = [
-                { id: 'legend-book-direct', color: '#177d6c' },
-                { id: 'legend-trusted-partner', color: '#4a6fa5' },
-                { id: 'legend-kennel', color: '#8b7355' },
-                { id: 'legend-field', color: '#b8860b' }
+                { id: 'legend-holiday-home', color: '#177d6c' },
+                { id: 'legend-private-field', color: '#4a6fa5' },
+                { id: 'legend-swimming-pool', color: '#8b7355' },
+                { id: 'legend-glamping', color: '#b8860b' },
+                { id: 'legend-others', color: '#808080' },
             ];
 
             legendItems.forEach(item => {
@@ -300,24 +305,24 @@
         }
 
         // Function to get custom paw print marker icon based on booking type
-        function getMarkerIcon(bookingType) {
+        function getMarkerIcon(businessType) {
             let color = '#177d6c'; // Default red
 
-            switch (bookingType) {
-                case 'Book Direct':
-                    color = '#177d6c'; // Red
+            switch (businessType) {
+                case 'Holiday Home':
+                    color = '#177d6c';
                     break;
-                case 'Trusted Partner':
-                    color = '#4a6fa5'; // Teal
+                case 'Private Field':
+                    color = '#4a6fa5';
                     break;
-                case 'Kennel':
-                    color = '#8b7355'; // Gold/Yellow
+                case 'Swimming Pool':
+                    color = '#8b7355';
                     break;
-                case 'Field':
-                    color = '#b8860b'; // Lime Green
+                case 'Glamping':
+                    color = '#b8860b';
                     break;
                 default:
-                    color = '#808080'; // Grey for unknown types
+                    color = '#808080';
                     break;
             }
 
@@ -392,7 +397,7 @@
 
                 if (!isNaN(lat) && !isNaN(lng)) {
                     const position = { lat: lat, lng: lng };
-                    const icon = getMarkerIcon(property.bookingType);
+                    const icon = getMarkerIcon(property.businessType);
 
                     const marker = new google.maps.Marker({
                         position: position,
