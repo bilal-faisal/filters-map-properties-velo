@@ -183,8 +183,8 @@ function filterPropertiesWithFilterData() {
     // Create a Set of property IDs that have filter data (where propertyReference is not empty)
     const propertiesWithFilters = new Set(
         allFilters
-        .filter(filter => filter.propertyReference) // Ensure propertyReference is not empty
-        .map(filter => filter.propertyReference)
+            .filter(filter => filter.propertyReference) // Ensure propertyReference is not empty
+            .map(filter => filter.propertyReference)
     );
 
     // Only keep properties that have corresponding filter data
@@ -450,6 +450,17 @@ function updateMapMarkers() {
         const imageURL = convertWixImageUrl(property?.mainImageGallery?.[0]?.src);
         const isBookDirect = filterData.bookingType?.includes("Book Direct") || false;
 
+        let detailPageLink = "";
+        const propOrDir = property.propOrDir[0] || "";
+
+        if (propOrDir === "property") {
+            detailPageLink = property['link-new-property-page-cms-listingName']
+        } else if (propOrDir === "directory") {
+            detailPageLink = property['link-properties-1-listingName']
+        } else {
+            detailPageLink = ""
+        }
+
         return {
             listingName: property.listingName,
             location: property.location,
@@ -461,7 +472,7 @@ function updateMapMarkers() {
             bookingType: filterData.bookingType ? filterData.bookingType[0] : 'default',
             bookNowLink: property.bookNowLink,
             businessType: filterData.businessType ? filterData.businessType[0] : 'default',
-            detailPageLink: property['link-new-property-page-cms-listingName'],
+            detailPageLink: detailPageLink,
             isBookDirect: isBookDirect,
             imageURL: imageURL,
         };
@@ -1280,14 +1291,14 @@ function checkSleepsRange(sleepsCount, selectedRange) {
     const count = parseInt(sleepsCount);
 
     switch (selectedRange) {
-    case "1-5":
-        return count >= 1 && count <= 5;
-    case "6-10":
-        return count >= 6 && count <= 10;
-    case "11-15":
-        return count >= 11 && count <= 15;
-    default:
-        return false;
+        case "1-5":
+            return count >= 1 && count <= 5;
+        case "6-10":
+            return count >= 6 && count <= 10;
+        case "11-15":
+            return count >= 11 && count <= 15;
+        default:
+            return false;
     }
 }
 
@@ -1342,16 +1353,16 @@ function checkNumberOfDogsAllowedPerRoomRange(numberOfDogsPerRoom, selectedRange
     const count = parseInt(numberOfDogsPerRoom);
 
     switch (selectedRange) {
-    case "1-3":
-        return count >= 1 && count <= 3;
-    case "4-6":
-        return count >= 4 && count <= 6;
-    case "7-9":
-        return count >= 7 && count <= 9;
-    case "10-12":
-        return count >= 10 && count <= 12;
-    default:
-        return false;
+        case "1-3":
+            return count >= 1 && count <= 3;
+        case "4-6":
+            return count >= 4 && count <= 6;
+        case "7-9":
+            return count >= 7 && count <= 9;
+        case "10-12":
+            return count >= 10 && count <= 12;
+        default:
+            return false;
     }
 }
 
@@ -1605,6 +1616,9 @@ function populatePropertyList() {
         const propertyTitle = itemData.listingName || "Property Name Not Available";
         $item('#textPropertyTitle').text = propertyTitle;
 
+        const businessType = filterData.businessType[0] || "";
+        $item('#textBusinessType').text = businessType;
+
         // Set location
         let locationText = itemData.location || "Location Not Available";
         locationText = locationText.replace(/⚲\s*/g, '').trim();
@@ -1617,6 +1631,7 @@ function populatePropertyList() {
             $item('#textPropertyTitle').customClassList.add("blurr-effect");
             $item('#textShortDescription').customClassList.add("blurr-effect");
             $item('#boxKeyFeatures').customClassList.add("blurr-effect");
+            $item('#vectorImageLocationIcon').customClassList.add("blurr-effect");
             $item('#textLocation').customClassList.add("blurr-effect");
         }
 
@@ -1626,33 +1641,30 @@ function populatePropertyList() {
             $item("#buttonBookNow").hide()
         }
 
+        const propOrDir = itemData.propOrDir[0] || "";
+
         // Set up button events
         $item('#buttonBookNow').onClick(() => {
-            // if (itemData.bookNowLink) {
-            //     to(itemData.bookNowLink);
-            // } else {
-            //     console.log("No booking link available for this property");
-            // }
             if (HAS_PREMIUM_PLAN) {
-                if (itemData['link-new-property-page-cms-listingName']) {
+                if (propOrDir === "property") {
                     to(itemData['link-new-property-page-cms-listingName']);
-                } else {
-                    console.log("No detail page link available for this property");
+                } else if (propOrDir === "directory") {
+                    to(itemData['link-properties-1-listingName']);
                 }
             } else {
-                to("https://www.xlescapes.com/pricing-plans/list");
+                to("https://www.xlescapes.com/unlock-xl-directory");
             }
         });
 
         $item('#buttonViewDetails').onClick(() => {
             if (HAS_PREMIUM_PLAN) {
-                if (itemData['link-new-property-page-cms-listingName']) {
+                if (propOrDir === "property") {
                     to(itemData['link-new-property-page-cms-listingName']);
-                } else {
-                    console.log("No detail page link available for this property");
+                } else if (propOrDir === "directory") {
+                    to(itemData['link-properties-1-listingName']);
                 }
             } else {
-                to("https://www.xlescapes.com/pricing-plans/list");
+                to("https://www.xlescapes.com/unlock-xl-directory");
             }
         });
 
