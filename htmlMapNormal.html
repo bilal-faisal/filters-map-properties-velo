@@ -348,6 +348,20 @@
             return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
         }
 
+        // Function to detect if device is mobile
+        function isMobileDevice() {
+            return window.innerWidth <= 768;
+        }
+
+        // Function to hide/show legend on mobile
+        function toggleLegendOnMobile(show) {
+            if (isMobileDevice()) {
+                const legend = document.querySelector('.color-legend');
+                if (legend) {
+                    legend.style.display = show ? 'block' : 'none';
+                }
+            }
+        }
         // Function to create or update markers on the map
         function updateMarkers(properties) {
             // If map is not initialized or Google Maps API is not ready, store data and exit
@@ -408,17 +422,25 @@
                                 `;
 
                     marker.addListener('click', () => {
+                        // Hide legend on mobile when popup opens
+                        toggleLegendOnMobile(false);
+
                         infoWindow.setContent(contentString);
                         infoWindow.open(map, marker);
 
-                        // Attach event listeners to buttons inside info window
+                        // Show legend when InfoWindow closes (mobile only)
+                        google.maps.event.addListener(infoWindow, 'closeclick', () => {
+                            toggleLegendOnMobile(true);
+                        });
+
+                        // Rest of your existing code for button listeners...
                         google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
                             const viewDetailsButton = document.querySelector('.info-window-content .view-details-btn');
                             if (viewDetailsButton) {
                                 viewDetailsButton.addEventListener('click', (e) => {
                                     const link = e.target.dataset.link;
                                     if (link) {
-                                        window.parent.postMessage({ type: 'navigate', url: link }, '*');
+                                        window.open(link, '_blank');
                                     }
                                 });
                             }
@@ -427,7 +449,7 @@
                                 bookNowButton.addEventListener('click', (e) => {
                                     const link = e.target.dataset.link;
                                     if (link) {
-                                        window.parent.postMessage({ type: 'navigate', url: link }, '*');
+                                        window.open(link, '_blank');
                                     }
                                 });
                             }
